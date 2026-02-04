@@ -1,0 +1,21 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cloudtrail": "^3.980.0",
+    "@aws-sdk/client-dynamodb": "^3.981.0",
+    "@aws-sdk/client-ec2": "^3.980.0",
+    "@aws-sdk/client-iam": "^3.980.0",
+    "@aws-sdk/client-s3": "^3.980.0",
+    "@aws-sdk/lib-dynamodb": "^3.981.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^4.22.1",
+    "uuid": "^13.0.0"
+  }
+}
