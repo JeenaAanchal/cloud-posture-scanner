@@ -4,7 +4,7 @@ export async function runCISChecks() {
 
   const results = [];
 
-  // 1️⃣ No S3 buckets publicly accessible
+  //No S3 buckets publicly accessible
   const publicBuckets = buckets.filter((b) => b.access === "Public");
   results.push({
     check: "No S3 buckets publicly accessible",
@@ -15,7 +15,7 @@ export async function runCISChecks() {
         : `Public buckets found: ${publicBuckets.map((b) => b.name).join(", ")}`,
   });
 
-  // 2️⃣ All S3 buckets encrypted
+  //All S3 buckets encrypted
   const unencryptedBuckets = buckets.filter((b) => !b.encrypted);
   results.push({
     check: "All S3 buckets encrypted",
@@ -28,7 +28,7 @@ export async function runCISChecks() {
             .join(", ")}`,
   });
 
-  // 3️⃣ IAM root MFA enabled
+  //IAM root MFA enabled
   const rootMFA = await checkIAMMFA();
   results.push({
     check: "IAM root account has MFA enabled",
@@ -38,7 +38,7 @@ export async function runCISChecks() {
       : "Root account MFA is NOT enabled",
   });
 
-  // 4️⃣ CloudTrail enabled
+  //CloudTrail enabled
   const cloudTrail = await checkCloudTrail();
   results.push({
     check: "CloudTrail is enabled",
@@ -48,7 +48,7 @@ export async function runCISChecks() {
       : "No active CloudTrail trail found",
   });
 
-  // 5️⃣ Security groups check
+  //Security groups check
   const sgIssues = await checkSGOpen(instances);
   results.push({
     check: "Security groups not open to 0.0.0.0/0 for SSH/RDP",
