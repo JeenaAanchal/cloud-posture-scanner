@@ -4,7 +4,6 @@ import StatusBadge from "./StatusBadge";
 export default function CISResultsTable({ data }) {
   return (
     <div className="mt-10 flex flex-col items-center">
-     
       <h2 className="text-2xl font-bold mb-6 text-center">
         CIS Security Check Results
       </h2>
@@ -15,7 +14,11 @@ export default function CISResultsTable({ data }) {
           data={data.map((c) => [
             c.check,
             <StatusBadge status={c.status} />,
-            c.evidence?.length > 0 ? c.evidence.join(", ") : "-",
+            Array.isArray(c.evidence)
+              ? c.evidence.length > 0
+                ? c.evidence.join(", ")
+                : "-"
+              : c.evidence || "-",
           ])}
         />
       </div>

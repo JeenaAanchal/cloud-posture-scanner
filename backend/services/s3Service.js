@@ -16,10 +16,10 @@ export async function getS3Buckets() {
 
     const buckets = await Promise.all(
       data.Buckets.map(async (bucket) => {
-        let encryptionEnabled = true; // 🔥 default true
-        let publicAccess = false;      // 🔥 default private
+        let encryptionEnabled = true; // default true
+        let publicAccess = false;      // default private
 
-        // 🔐 Encryption check
+        // Encryption check
         try {
           await s3Client.send(
             new GetBucketEncryptionCommand({ Bucket: bucket.Name })
@@ -29,7 +29,7 @@ export async function getS3Buckets() {
           encryptionEnabled = false; // assume false if error
         }
 
-        // 🌍 Public access check
+        //  Public access check
         try {
           const policyStatus = await s3Client.send(
             new GetBucketPolicyStatusCommand({ Bucket: bucket.Name })
@@ -39,7 +39,7 @@ export async function getS3Buckets() {
           publicAccess = false;
         }
 
-        // 🗺 Get bucket region
+        // Get bucket region
         let region = "unknown";
         try {
           const location = await s3Client.send(
