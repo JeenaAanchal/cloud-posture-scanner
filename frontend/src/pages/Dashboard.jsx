@@ -10,13 +10,21 @@ export default function Dashboard() {
   const [s3Data, setS3Data] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:4000/scan-history")
-      .then((res) => res.json())
-      .then((scans) => {
-        const latestScan = scans[scans.length - 1];
-        setCisResults(latestScan?.results || []);
-      });
+    const runScanAndFetch = async () => {
+      // Step 1: Run fresh scan
+      await fetch("http://localhost:4000/scan");
+
+      // Step 2: Get updated scan history
+      const res = await fetch("http://localhost:4000/scan-history");
+      const scans = await res.json();
+
+      const latestScan = scans[scans.length - 1];
+      setCisResults(latestScan?.results || []);
+    };
+
+    runScanAndFetch();
   }, []);
+
 
   useEffect(() => {
     fetch("http://localhost:4000/instances")
@@ -39,7 +47,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 py-12">
       <div className="max-w-7xl mx-auto px-6">
-        
+
         {/* Header */}
         <div className="mb-14">
           <h1 className="text-4xl text-center font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
@@ -57,7 +65,7 @@ export default function Dashboard() {
           <Card title="Security Score" value={`${score}%`} />
         </div>
 
-        
+
         <div className="space-y-20">
           <CISResultsTable data={cisResults} />
           <EC2Table data={ec2Data} />
