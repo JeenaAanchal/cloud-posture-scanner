@@ -1,14 +1,13 @@
 import { config as dotenvConfig } from "dotenv";
 dotenvConfig();
 
-//debug
 console.log("AWS_REGION:", process.env.AWS_REGION);
 console.log(
   "AWS_ACCESS_KEY_ID:",
   process.env.AWS_ACCESS_KEY_ID ? "LOADED" : "MISSING"
 );
 
-// AWS configuration
+//  Common AWS configuration
 const awsConfig = {
   region: process.env.AWS_REGION,
   credentials: {
@@ -17,7 +16,7 @@ const awsConfig = {
   },
 };
 
-// Import AWS SDK Clients
+//  Import AWS SDK Clients
 import { EC2Client } from "@aws-sdk/client-ec2";
 import { S3Client } from "@aws-sdk/client-s3";
 import { IAMClient } from "@aws-sdk/client-iam";

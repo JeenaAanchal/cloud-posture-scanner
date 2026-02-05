@@ -12,7 +12,7 @@ export default function Dashboard() {
   useEffect(() => {
     const runScanAndFetch = async () => {
       // Step 1: Run fresh scan
-      await fetch("http://localhost:4000/scan");
+      await fetch("http://localhost:4000/run-scan");
 
       // Step 2: Get updated scan history
       const res = await fetch("http://localhost:4000/scan-history");

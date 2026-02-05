@@ -15,14 +15,14 @@ const PORT = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 
+// -------- Routes --------
 
-
+// Health check
 app.get("/", (req, res) => {
   res.send("Cloud Posture Scanner API is running 🚀");
 });
 
-
-
+// Get EC2 instances
 app.get("/instances", async (req, res) => {
   try {
     const instances = await getEC2Instances();
@@ -33,8 +33,7 @@ app.get("/instances", async (req, res) => {
   }
 });
 
-
-
+// Get S3 buckets
 app.get("/buckets", async (req, res) => {
   try {
     const buckets = await getS3Buckets();
@@ -45,13 +44,10 @@ app.get("/buckets", async (req, res) => {
   }
 });
 
-
-
+// Run CIS scan
 app.get("/run-scan", async (req, res) => {
   try {
     const results = await runCISChecks();
-
-    // save to DynamoDB
     await saveScanResults(results);
 
     res.json({
@@ -59,24 +55,24 @@ app.get("/run-scan", async (req, res) => {
       results,
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "CIS scan failed" });
+    console.error("CIS scan error:", err); // 🔥 log the error
+    res.status(500).json({ error: "CIS scan failed", details: err.message });
   }
 });
 
 
-
+// Get scan history from DynamoDB
 app.get("/scan-history", async (req, res) => {
   try {
     const scans = await getAllScans();
     res.json(scans);
   } catch (err) {
-    console.error(err);
+    console.error("Fetch scan history error:", err);
     res.status(500).json({ error: "Failed to fetch scan history" });
   }
 });
 
-
+// Start server
 app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
 });
